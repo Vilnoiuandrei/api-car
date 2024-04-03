@@ -1,4 +1,3 @@
-const Car = require("../models/carModel");
 const User = require("../models/userModel");
 
 exports.getAllUsers = async function (req, res) {
@@ -21,7 +20,7 @@ exports.getAllUsers = async function (req, res) {
 };
 exports.getUser = async function (req, res) {
   try {
-    const user = await Car.findById(req.params.id);
+    const user = await User.findOne({ email: req.params.email });
 
     res.status(200).json({
       status: "success",
