@@ -1,6 +1,25 @@
 const express = require("express");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
 
 const app = express();
+
+app.use(helmet());
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+
+app.use(express.json({ limit: "10kb" }));
+app.use("/api", limiter);
+
+app.use(mongoSanitize());
+
+app.use(xss());
 
 const carRouter = require("./rotes/carRoutes");
 const userRouter = require("./rotes/userRoutes");
