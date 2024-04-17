@@ -6,7 +6,11 @@ const mongoSanitize = require("express-mongo-sanitize");
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 
 const limiter = rateLimit({
   max: 100,
