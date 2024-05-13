@@ -38,6 +38,12 @@ exports.signup = async function (req, res, next) {
       error: "Please provide a name,email,password and confirm passworld!",
     });
   }
+
+  if (typeof password !== "string") {
+    return res.status(401).json({
+      error: "The password must be a string",
+    });
+  }
   if (password.length < 8) {
     return res.status(401).json({
       error: "The password must have a minimum of 8 characters",
