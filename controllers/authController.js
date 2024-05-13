@@ -32,6 +32,19 @@ function createSendToken(user, statusCode, res) {
 }
 
 exports.signup = async function (req, res, next) {
+  const { name, email, password, passwordConfirm } = req.body;
+  if (!name || !email || !password || !passwordConfirm) {
+    return res
+      .status(400)
+      .json({
+        error: "Please provide a name,email,password and confirm passworld!",
+      });
+  }
+  if (password !== passwordConfirm) {
+    return req.status(401).json({
+      error: "The passwords are not the same ",
+    });
+  }
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
