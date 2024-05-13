@@ -34,14 +34,17 @@ function createSendToken(user, statusCode, res) {
 exports.signup = async function (req, res, next) {
   const { name, email, password, passwordConfirm } = req.body;
   if (!name || !email || !password || !passwordConfirm) {
-    return res
-      .status(400)
-      .json({
-        error: "Please provide a name,email,password and confirm passworld!",
-      });
+    return res.status(400).json({
+      error: "Please provide a name,email,password and confirm passworld!",
+    });
+  }
+  if (password.length < 8) {
+    return res.status(401).json({
+      error: "The password must have a minimum of 8 characters",
+    });
   }
   if (password !== passwordConfirm) {
-    return req.status(401).json({
+    return res.status(401).json({
       error: "The passwords are not the same ",
     });
   }
