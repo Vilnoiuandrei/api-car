@@ -11,7 +11,6 @@ const carSchema = new mongoose.Schema({
   },
   variant: {
     type: String,
-    unique: true,
     required: [true, "A car must have variant"],
   },
 
