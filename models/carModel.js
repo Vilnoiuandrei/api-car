@@ -21,6 +21,8 @@ const carSchema = new mongoose.Schema({
   horsePower: Number,
   zeroToHundred: Number,
   topSpeed: Number,
+  engineDisplacement: Number,
+  engineType: String,
   price: {
     type: Number,
   },
