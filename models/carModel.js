@@ -29,10 +29,7 @@ const carSchema = new mongoose.Schema({
   description: String,
   imageCover: String,
   images: [String],
-  rating: {
-    type: Number,
-    default: 0,
-  },
+  likes: [String],
 });
 
 const Car = mongoose.model("Car", carSchema);
