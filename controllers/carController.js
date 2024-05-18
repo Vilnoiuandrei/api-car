@@ -102,15 +102,21 @@ exports.deleteCar = async (req, res) => {
 exports.getLikes = async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
-    const { likes } = car.likes;
+    if (!car) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Car not found",
+      });
+    }
+
     res.status(200).json({
       status: "succes",
-      data: { likes: likes.length },
+      data: { likes: car.likes.length },
     });
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 };
