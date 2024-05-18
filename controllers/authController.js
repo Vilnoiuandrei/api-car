@@ -34,29 +34,45 @@ function createSendToken(user, statusCode, res) {
 exports.signup = async function (req, res, next) {
   const { name, email, password, passwordConfirm } = req.body;
   if (!name || !email || !password || !passwordConfirm) {
-    return res.status(400).json({
-      error: "Please provide a name,email,password and confirm passworld!",
+    res.status(400).json({
+      error: "Please provide a name, email, password, and confirm password!",
     });
   }
 
   if (password.length < 8) {
-    return res.status(401).json({
+    res.status(401).json({
       error: "The password must have a minimum of 8 characters",
     });
   }
   if (password !== passwordConfirm) {
-    return res.status(401).json({
-      error: "The passwords are not the same ",
+    res.status(401).json({
+      error: "The passwords are not the same",
     });
   }
-  const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-  });
 
-  createSendToken(newUser, 201, res);
+  try {
+    const newUser = await User.create({
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
+
+    createSendToken(newUser, 201, res);
+  } catch (error) {
+    if (error.code === 11000 && error.name === "MongoError") {
+      // Duplicate key error (email already exists)
+      res.status(400).json({
+        error: "Email already exists",
+      });
+    } else {
+      // Other errors
+
+      res.status(500).json({
+        error: "An unexpected error occurred during signup",
+      });
+    }
+  }
 };
 
 exports.login = async function (req, res, next) {
