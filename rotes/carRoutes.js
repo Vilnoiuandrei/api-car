@@ -24,5 +24,5 @@ router
   .get(protect, getCar)
   .patch(protect, restrictTo("admin", "creator"), updateCar)
   .delete(protect, restrictTo("admin"), deleteCar);
-router.route("/likes").get(protect, getLikes).patch(protect, updateLikes);
+router.route("/likes/:id").get(protect, getLikes).patch(protect, updateLikes);
 module.exports = router;
