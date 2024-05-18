@@ -5,6 +5,8 @@ const {
   getCar,
   updateCar,
   deleteCar,
+  getLikes,
+  updateLikes,
 } = require("../controllers/carController");
 const { restrictTo, protect } = require("../controllers/authController");
 
@@ -22,5 +24,5 @@ router
   .get(protect, getCar)
   .patch(protect, restrictTo("admin", "creator"), updateCar)
   .delete(protect, restrictTo("admin"), deleteCar);
-
+router.route("/likes").get(protect, getLikes).patch(protect, updateLikes);
 module.exports = router;

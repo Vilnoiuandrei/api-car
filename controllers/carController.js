@@ -99,7 +99,44 @@ exports.deleteCar = async (req, res) => {
     });
   }
 };
-
+exports.getLikes = async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+    const { likes } = car.likes;
+    res.status(200).json({
+      status: "succes",
+      data: { likes: likes.length },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+exports.updateLikes = async (req, res) => {
+  try {
+    const car = Car.findByIdAndUpdate(
+      req.params.id,
+      { $push: { likes: req.body.userId } },
+      { new: true, useFindAndModify: false }
+    );
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        car,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
 // exports.getCarStats = async (req, res) => {
 //   try {
 //     const stats = await Car.aggregate([
