@@ -122,7 +122,7 @@ exports.getLikes = async (req, res) => {
 };
 exports.updateLikes = async (req, res) => {
   try {
-    const car = Car.findByIdAndUpdate(
+    const car = await Car.findByIdAndUpdate(
       req.params.id,
       { $push: { likes: req.body.userId } },
       { new: true, useFindAndModify: false }
@@ -137,9 +137,9 @@ exports.updateLikes = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(404).json({
+    res.status(400).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 };
