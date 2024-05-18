@@ -120,7 +120,7 @@ exports.getLikes = async (req, res) => {
     });
   }
 };
-exports.updateLikes = async (req, res) => {
+exports.addLikes = async (req, res) => {
   try {
     const car = await Car.findByIdAndUpdate(
       req.params.id,
@@ -143,6 +143,30 @@ exports.updateLikes = async (req, res) => {
     });
   }
 };
+exports.removeLikes = async (req, res) => {
+  try {
+    const car = await Car.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { likes: req.body.userId } },
+      { new: true, useFindAndModify: false }
+    );
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        car,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
 // exports.getCarStats = async (req, res) => {
 //   try {
 //     const stats = await Car.aggregate([
