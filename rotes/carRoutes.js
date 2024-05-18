@@ -7,7 +7,7 @@ const {
   deleteCar,
   getLikes,
   addLikes,
-  removeLike,
+  removeLikes,
 } = require("../controllers/carController");
 const { restrictTo, protect } = require("../controllers/authController");
 
@@ -26,5 +26,5 @@ router
   .patch(protect, restrictTo("admin", "creator"), updateCar)
   .delete(protect, restrictTo("admin"), deleteCar);
 router.route("/likes/:id").get(protect, getLikes).patch(protect, addLikes);
-router.route("/likes/remove/:id").patch(protect, removeLike);
+router.route("/likes/remove/:id").patch(protect, removeLikes);
 module.exports = router;
